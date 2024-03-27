@@ -27,7 +27,6 @@ const leerProductosJSON = () => {
 
 // Función para recomendar productos basados en el perfil del cliente
 const recomendarProductos = (ingresos, ciudad, edad) => {
-    const clientes = leerClientesJSON();
     const productos = leerProductosJSON();
 
     // Filtrar productos basados en las reglas de negocio
@@ -35,7 +34,7 @@ const recomendarProductos = (ingresos, ciudad, edad) => {
         // Lógica de filtrado basada en las reglas de negocio
         switch (producto.descripcion) {
             case 'Cuenta de ahorros':
-                return clienteColombianoMayorDeEdad(edad) && ingresos > 0;
+                return clienteColombianoMayorDeEdad(edad)  && ingresos > 0;
             case 'Tarjeta débito':
                 return clienteColombianoMayorDeEdad(edad) && ingresos >= 1300000;
             case 'Tarjeta crédito':
@@ -58,16 +57,15 @@ const recomendarProductos = (ingresos, ciudad, edad) => {
 
 // Función para verificar si el cliente es colombiano y mayor de edad
 const clienteColombianoMayorDeEdad = (edad) => {
-    // Implementa la lógica para verificar si el cliente es colombiano y mayor de edad
-    // Esta función debería devolver true o false
-    return true; // Ejemplo: siempre devuelve true para este caso
+    // Verificar si el cliente es colombiano y mayor de edad (mayor o igual a 18 años)
+    return edad >= 18; // Devuelve true si el cliente es mayor o igual a 18 años, de lo contrario devuelve false
 };
 
 // Función para verificar si el cliente es de una ciudad permitida para giros
 const clienteDeCiudadesPermitidas = (ciudad) => {
-    // Implementa la lógica para verificar si el cliente es de una ciudad permitida para giros
-    // Esta función debería devolver true o false
+    // Verificar si la ciudad del cliente está en la lista de ciudades permitidas para giros
     return ['Colombia', 'Peru', 'Ecuador', 'Panama'].includes(ciudad);
 };
+
 
 module.exports = { recomendarProductos };
