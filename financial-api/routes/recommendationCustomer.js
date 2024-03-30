@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 
 
     // Devolvemos los productos recomendados como respuesta
-    res.json({ customerId: cliente.codigo, recommendations: productosRecomendados });
+    res.json({ customerName: cliente.nombreCompleto,customerId: cliente.codigo, recommendations: productosRecomendados });
 });
 
 module.exports = router;
