@@ -1,35 +1,39 @@
 const express = require('express');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json'); // Ruta al archivo Swagger JSON
+const customerRoutes = require('./routes/customer');
+const productRoutes = require('./routes/products');
+const recommendationRoutes = require('./routes/recommendationCustomer'); // Importa las rutas de recomendación
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware para parsear el body de las solicitudes como JSON
+// Middleware para parsear el cuerpo de las solicitudes como JSON
 app.use(express.json());
 
-// Endpoint para recomendar productos
-app.post('/recomendar', (req, res) => {
-    try {
-        // Obtener datos del cuerpo de la solicitud
-        const { ingresos, ciudadUbicacion, edad } = req.body;
+// Configuración de las rutas de clientes
+app.use('/customers', customerRoutes);
 
-        // Llamar a la función para recomendar productos
-        const recomendaciones = recomendarProductos(ingresos, ciudadUbicacion, edad);
+app.use('/products', productRoutes);
 
-        // Enviar la respuesta con las recomendaciones
-        res.status(200).json(recomendaciones);
-    } catch (error) {
-        // Manejo de errores
-        console.error('Error al recomendar productos:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
+app.use('/recommendation', recommendationRoutes);
+
+
+// Ruta de inicio
+app.get('/', (req, res) => {
+    res.send('¡Bienvenido al servidor del ecosistema financiero!');
 });
 
-// Ruta para servir la interfaz de Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// Manejador de errores para rutas no encontradas
+app.use((req, res, next) => {
+    res.status(404).send('Ruta no encontrada');
+});
+
+// Manejador de errores global
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Hubo un error en el servidor');
+});
 
 // Iniciar el servidor
 app.listen(PORT, () => {
-    console.log(`Servidor Express corriendo en http://localhost:${PORT}/`);
+    console.log(`Servidor Express corriendo en http://localhost:${PORT}`);
 });
