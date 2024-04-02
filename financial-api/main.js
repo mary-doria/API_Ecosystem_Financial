@@ -55,6 +55,31 @@ const recomendarProductos = (ingresos, ciudad, edad) => {
     return productosRecomendados;
 };
 
+const obtenerClientesConProductos = () => {
+    // Leer los datos de clientes y productos
+    const clientes = leerClientesJSON();
+    const productos = leerProductosJSON();
+
+    // Array para almacenar los clientes con al menos un producto asociado
+    const clientesConProductos = [];
+
+    // Iterar sobre cada cliente
+    clientes.forEach(cliente => {
+        // Verificar si el cliente tiene al menos un producto asociado
+        const tieneProductosAsociados = productos.some(producto => producto.clienteId === cliente.codigo);
+
+        // Si el cliente tiene al menos un producto, agregarlo a la lista de clientes con productos
+        if (tieneProductosAsociados) {
+            clientesConProductos.push({
+                codigo: cliente.codigo,
+                nombreCompleto: cliente.nombreCompleto,
+                ciudadUbicacion: cliente.ciudadUbicacion
+            });
+        }
+    });
+
+    return clientesConProductos;
+};
 // Función para verificar si el cliente es colombiano y mayor de edad
 const clienteColombianoMayorDeEdad = (edad) => {
     // Verificar si el cliente es colombiano y mayor de edad (mayor o igual a 18 años)

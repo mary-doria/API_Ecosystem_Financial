@@ -1,26 +1,35 @@
 const express = require('express');
-const { recomendarProductos } = require('../main');  // Ajusta la ruta según la ubicación de tu archivo
+const fs = require('fs').promises; // Usa la API de promesas de fs para facilitar el uso de async/await
+const { recomendarProductos } = require('../main');
 
 const router = express.Router();
 
-// Endpoint para recomendar productos a un cliente específico
-router.get('/', (req, res) => {
-    const cliente = {
-        "codigo": "C004",
-        "nombreCompleto": "Angelica Rios",
-        "claveAcceso": "abc199",
-        "ingresos": 1000,
-        "ciudadUbicacion": "Medellin",
-        "edad": 36
-    };
+router.get('/', async (req, res) => {
+    try {
+        // Asegúrate de que la ruta al archivo sea correcta respecto a la ubicación de este script
+        const data = await fs.readFile('C:\\Users\\mary.doriag_pragma\\Desktop\\ecosistemaFin\\API_Ecosistema_Financiero\\financial-api\\data\\Customer.json', { encoding: 'utf8' });
+        const clientes = JSON.parse(data);
+        
+        // Itera sobre cada cliente y calcula sus productos recomendados
+        const recomendaciones = clientes.map(cliente => {
+            // Asume que la función recomendarProductos devuelve las recomendaciones basadas en los parámetros proporcionados
+            const productosRecomendados = recomendarProductos(cliente.ingresos, cliente.ciudadUbicacion, cliente.edad);
+            console.log('Productos recomendados para', cliente.nombreCompleto, ':', productosRecomendados);
 
-    // Llamamos a la función recomendarProductos con los datos del cliente
-    const productosRecomendados = recomendarProductos(cliente.ingresos, cliente.ciudadUbicacion, cliente.edad);
-    console.log('Productos recomendados:', productosRecomendados);
+            // Agrega las recomendaciones de productos al objeto del cliente
+            return {
+                customerName: cliente.nombreCompleto,
+                customerId: cliente.codigo,
+                recommendations: productosRecomendados
+            };
+        });
 
-
-    // Devolvemos los productos recomendados como respuesta
-    res.json({ customerName: cliente.nombreCompleto,customerId: cliente.codigo, recommendations: productosRecomendados });
+        // Envía la respuesta con la lista de clientes y sus productos recomendados
+        res.json(recomendaciones);
+    } catch (error) {
+        console.error('Error al leer el archivo Customer.json:', error);
+        res.status(500).send('Error interno del servidor');
+    }
 });
 
 module.exports = router;
