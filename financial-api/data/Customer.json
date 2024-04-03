@@ -52,5 +52,14 @@
         "ciudadUbicacion": "Pereira",
         "pais": "Colombia",
         "edad": 50
+    },
+    {
+        "codigo": "C006",
+        "nombreCompleto": "Milena Hernandez",
+        "claveAcceso": "123336",
+        "ingresos": 102000,
+        "ciudadUbicacion": "Pereira",
+        "pais": "Colombia",
+        "edad": 14
     }
 ]
