@@ -34,7 +34,7 @@ const recomendarProductos = (ingresos, ciudad, edad) => {
         // Lógica de filtrado basada en las reglas de negocio
         switch (producto.descripcion) {
             case 'Cuenta de ahorros':
-                return clienteColombianoMayorDeEdad(edad)  && ingresos > 0;
+                return clienteColombianoMayorDeEdad(edad) && ingresos > 0;
             case 'Tarjeta débito':
                 return clienteColombianoMayorDeEdad(edad) && ingresos >= 1300000;
             case 'Tarjeta crédito':
@@ -44,7 +44,7 @@ const recomendarProductos = (ingresos, ciudad, edad) => {
             case 'Inversiones':
                 return edad >= 25 && ingresos >= 4500000;
             case 'Giros':
-                return clienteDeCiudadesPermitidas(ciudad);
+                return clienteDePaisesPermitidos(ciudad);
             case 'Tarjeta amparada':
                 return edad >= 15;
             default:
@@ -55,20 +55,58 @@ const recomendarProductos = (ingresos, ciudad, edad) => {
     return productosRecomendados;
 };
 
+// Función para recomendar clientes para un producto específico
+const obtenerClientesPorProducto = () => {
+    const clientes = leerClientesJSON();
+    const productos = leerProductosJSON();
+
+    // Objeto para almacenar las listas de clientes por producto
+    const clientesPorProducto = {};
+
+    // Iterar sobre cada producto
+    productos.forEach(producto => {
+        const codigoProducto = producto.codigo;
+        clientesPorProducto[codigoProducto] = [];
+
+
+        clientes.forEach(cliente => {
+            const condiciones = producto.condiciones;
+
+    
+            let cumpleCondiciones = true;
+
+            if (cliente.edad > condiciones.edadMinima && condiciones.ingresosMinimos >= cliente.ingresos) {
+                cumpleCondiciones = false;
+            }
+
+
+        if (cumpleCondiciones) {
+            clientesPorProducto[codigoProducto].push(cliente.nombreCompleto);
+        }
+        });
+    });
+
+    return clientesPorProducto;
+};
+
+
+
+
+
 const obtenerClientesConProductos = () => {
     // Leer los datos de clientes y productos
     const clientes = leerClientesJSON();
     const productos = leerProductosJSON();
 
-    // Array para almacenar los clientes con al menos un producto asociado
+
     const clientesConProductos = [];
 
     // Iterar sobre cada cliente
     clientes.forEach(cliente => {
-        // Verificar si el cliente tiene al menos un producto asociado
+
         const tieneProductosAsociados = productos.some(producto => producto.clienteId === cliente.codigo);
 
-        // Si el cliente tiene al menos un producto, agregarlo a la lista de clientes con productos
+  
         if (tieneProductosAsociados) {
             clientesConProductos.push({
                 codigo: cliente.codigo,
@@ -80,17 +118,22 @@ const obtenerClientesConProductos = () => {
 
     return clientesConProductos;
 };
+
 // Función para verificar si el cliente es colombiano y mayor de edad
 const clienteColombianoMayorDeEdad = (edad) => {
     // Verificar si el cliente es colombiano y mayor de edad (mayor o igual a 18 años)
     return edad >= 18; // Devuelve true si el cliente es mayor o igual a 18 años, de lo contrario devuelve false
 };
 
-// Función para verificar si el cliente es de una ciudad permitida para giros
-const clienteDeCiudadesPermitidas = (ciudad) => {
-    // Verificar si la ciudad del cliente está en la lista de ciudades permitidas para giros
-    return ['Colombia', 'Peru', 'Ecuador', 'Panama'].includes(ciudad);
+
+const clienteDePaisesPermitidos = (pais) => {
+
+    return ['Colombia', 'Peru', 'Ecuador', 'Panama'].includes(pais);
 };
 
+// Función para obtener la lista completa de productos
+const obtenerListaProductos = () => {
+    return leerProductosJSON();
+};
 
-module.exports = { recomendarProductos };
+module.exports = { recomendarProductos, obtenerClientesPorProducto, leerProductosJSON, obtenerClientesConProductos, obtenerListaProductos };

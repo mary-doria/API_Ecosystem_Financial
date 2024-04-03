@@ -12,11 +12,11 @@ router.get('/', async (req, res) => {
         
         // Itera sobre cada cliente y calcula sus productos recomendados
         const recomendaciones = clientes.map(cliente => {
-            // Asume que la función recomendarProductos devuelve las recomendaciones basadas en los parámetros proporcionados
+ 
             const productosRecomendados = recomendarProductos(cliente.ingresos, cliente.ciudadUbicacion, cliente.edad);
             console.log('Productos recomendados para', cliente.nombreCompleto, ':', productosRecomendados);
 
-            // Agrega las recomendaciones de productos al objeto del cliente
+
             return {
                 customerName: cliente.nombreCompleto,
                 customerId: cliente.codigo,

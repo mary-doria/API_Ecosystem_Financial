@@ -1,7 +1,7 @@
 const express = require('express');
 
 const recommendationRoutes = require('./routes/recommendationCustomer'); // Importa las rutas de recomendación
-
+const recommendationProductsRoutes = require('./routes/recommendationProducts');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +12,7 @@ app.use(express.json());
 // Configuración de las rutas de clientes
 
 app.use('/recommendation', recommendationRoutes);
+app.use('/recommendationProducts', recommendationProductsRoutes);
 
 
 

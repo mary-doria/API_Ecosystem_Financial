@@ -5,14 +5,16 @@
         "claveAcceso": "123456",
         "ingresos": 1500000,
         "ciudadUbicacion": "Bogotá",
+        "pais": "Colombia",
         "edad": 25
     },
     {
         "codigo": "C002",
         "nombreCompleto": "Maria Rodriguez",
         "claveAcceso": "qwerty",
-        "ingresos": 3000000,
+        "ingresos": 45000000,
         "ciudadUbicacion": "Medellín",
+        "pais": "Colombia",
         "edad": 30
     },
     {
@@ -21,6 +23,7 @@
         "claveAcceso": "abc123",
         "ingresos": 200000,
         "ciudadUbicacion": "Cali",
+        "pais": "Colombia",
         "edad": 28
     },
     {
@@ -29,6 +32,7 @@
         "claveAcceso": "abc199",
         "ingresos": 1000,
         "ciudadUbicacion": "Medellin",
+        "pais": "Colombia",
         "edad": 36
     },
     {
@@ -37,6 +41,7 @@
         "claveAcceso": "abg123",
         "ingresos": 2000000,
         "ciudadUbicacion": "Monteria",
+        "pais": "Colombia",
         "edad": 17
     },
     {
@@ -45,6 +50,7 @@
         "claveAcceso": "123456",
         "ingresos": 1000000,
         "ciudadUbicacion": "Pereira",
+        "pais": "Colombia",
         "edad": 50
     }
 ]
