@@ -45,6 +45,7 @@
         "codigo": "P006",
         "descripcion": "Giros",
         "condiciones": {
+            "edadMinima": 18,
             "pais": ["Colombia", "Peru", "Ecuador", "Panama"]
         }
     },

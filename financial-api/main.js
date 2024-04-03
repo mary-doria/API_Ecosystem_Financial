@@ -73,16 +73,12 @@ const obtenerClientesPorProducto = () => {
             const condiciones = producto.condiciones;
 
     
-            let cumpleCondiciones = true;
-
-            if (cliente.edad > condiciones.edadMinima && condiciones.ingresosMinimos >= cliente.ingresos) {
-                cumpleCondiciones = false;
+            if (cliente.edad >= condiciones.edadMinima) {
+                if (condiciones.ingresosMinimos === undefined || cliente.ingresos >= condiciones.ingresosMinimos) {
+                    clientesPorProducto[codigoProducto].push(cliente.nombreCompleto);
+                }
             }
-
-
-        if (cumpleCondiciones) {
-            clientesPorProducto[codigoProducto].push(cliente.nombreCompleto);
-        }
+            
         });
     });
 
