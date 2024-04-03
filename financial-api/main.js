@@ -66,26 +66,22 @@ const obtenerClientesPorProducto = () => {
     // Iterar sobre cada producto
     productos.forEach(producto => {
         const codigoProducto = producto.codigo;
-        clientesPorProducto[codigoProducto] = [];
-
+        const nombreProducto = producto.descripcion;
+        clientesPorProducto[codigoProducto] = { nombre: nombreProducto, clientes: [] };
 
         clientes.forEach(cliente => {
             const condiciones = producto.condiciones;
 
-    
             if (cliente.edad >= condiciones.edadMinima) {
                 if (condiciones.ingresosMinimos === undefined || cliente.ingresos >= condiciones.ingresosMinimos) {
-                    clientesPorProducto[codigoProducto].push(cliente.nombreCompleto);
+                    clientesPorProducto[codigoProducto].clientes.push(cliente.nombreCompleto);
                 }
             }
-            
         });
     });
 
     return clientesPorProducto;
 };
-
-
 
 
 // Función para verificar si el cliente es colombiano y mayor de edad
